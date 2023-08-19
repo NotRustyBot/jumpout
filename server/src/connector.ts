@@ -1,5 +1,5 @@
 import { WebSocket, WebSocketServer } from "ws";
-import { HandshakeReply, HandshakeRequest, NetManager, headerId } from "@shared/netManager";
+import { GasData, HandshakeReply, HandshakeRequest, NetManager, headerId } from "@shared/netManager";
 import { AutoView } from "@shared/datagram";
 import { Message, ObjectScope, ServerInfo, ShipBehaviour, Sync, Transform, ClientData } from "./registry";
 import { Client } from "./client";
@@ -8,6 +8,7 @@ import { Detector } from "./server/detector";
 import { messageType, netMessage } from "@shared/messages";
 import { RangeDetector } from "./server/rangeDetector";
 import { partActions } from "@shared/common";
+import { clientGasManager } from "./gas/gasHandler";
 
 export class Connector {
     clients = new Map<WebSocket, Client>();
@@ -51,7 +52,7 @@ export class Connector {
                                     response = "i don't know you";
                                 }
 
-                                const temp = new AutoView(new ArrayBuffer(1000));
+                                const temp = new AutoView(new ArrayBuffer(1000000));
                                 const client = new Client(clientSocket, out.clientId, out.secret);
                                 client.setupObject();
 
@@ -68,6 +69,7 @@ export class Connector {
                                     client.socketClosed();
                                     this.clients.delete(clientSocket);
                                 });
+                                clientGasManager.serialiseAll(temp);
                                 temp.writeUint16(headerId.objects);
                                 temp.writeUint16(2);
                                 ServerInfo.get().parent.getComponentByType(Sync).writeAllBits(temp);

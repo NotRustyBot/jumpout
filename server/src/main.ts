@@ -1,9 +1,7 @@
 import { AutoView } from "@shared/datagram";
 import { Connector } from "./connector";
 import {
-    BeaconDeployerPart,
     DynamicHitbox,
-    Hitbox,
     MarkerDetector,
     Message,
     NetManager,
@@ -22,7 +20,7 @@ import { Vector } from "@shared/types";
 import { startDevServer } from "./devserver";
 import { serverMode } from "@shared/serverInfo";
 import { messageType } from "@shared/messages";
-import { SubmarinePart, initCommon, partTypes, submarineLayer, terrainLayer } from "@shared/common";
+import { initCommon, submarineLayer, terrainLayer } from "@shared/common";
 import { Detector } from "./server/detector";
 import { RangeDetector } from "./server/rangeDetector";
 import { RangeDetectable } from "./server/rangeDetectable";
@@ -30,13 +28,15 @@ import { Client } from "./client";
 import { drawableExtra } from "@shared/mock/drawable";
 import { startContentServer } from "./contentServe";
 import fs from "fs";
+import { clientGasManager, setupGas } from "./gas/gasHandler";
+import { GasChecker } from "./gas/gasChecker";
 
 export const DEV_MODE = !!process.env.dev;
 
 initCommon();
 startContentServer();
 if (DEV_MODE) startDevServer();
-
+setupGas();
 NetManager.initDatagrams();
 NetManager.identity = 0;
 export const connector = new Connector();
@@ -86,9 +86,11 @@ export function createSubmarine(client: Client) {
     const detector = sub.addComponent(RangeDetector);
     const detectable = sub.addComponent(RangeDetectable);
     const markerDetector = sub.addComponent(MarkerDetector);
+    const gasChecker = sub.addComponent(GasChecker);
     control.submarine = ship;
     ship.physics = physics;
     ship.owner = client.id;
+    gasChecker.range = 10000;
     drawable.physics = physics;
     ship.hitbox = hitbox;
     hitbox.sides = new Vector(300, 300);
@@ -99,7 +101,7 @@ export function createSubmarine(client: Client) {
     net.authorize([ship, transform, drawable, physics]);
     net.authorize([control], client.id);
     net.exclusivity([control], client.id);
-    detector.range = {x: 10000, y: 10000};
+    detector.range = { x: 10000, y: 10000 };
     detector.subscribe(client);
     markerDetector.subscribe(client);
     sub.initialiseComponents();
@@ -121,12 +123,15 @@ setInterval(() => {
         game.fire("collisions", dt * 60);
         game.fire("physics", dt * 60);
         game.fire("post-collision", dt * 60);
-    serverInfo.time += dt;
+        serverInfo.time += dt;
     }
 
     Detector.processAll();
-    sendView.index = 0;
 
+    
+    sendView.index = 0;
+    clientGasManager.serialise(sendView);
+    
     sendView.writeUint16(headerId.objects);
     const sbindex = sendView.index;
     sendView.writeUint16(0);

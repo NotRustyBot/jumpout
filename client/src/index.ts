@@ -10,16 +10,18 @@ import { SubControl } from "./submarineControl";
 import { Vector } from "@shared/types";
 import { keys } from "./control";
 import { messageType } from "@shared/messages";
+import { GasManager } from "@shared/gasManager";
 import { drawableExtra } from "@shared/mock/drawable";
 import { initCommon } from "@shared/common";
 import { TerrainFilter } from "./filters/terrain/terrainFilter";
 import { UI, Waypoint } from "./ui/uiHandler";
 import { PhysicsDrawable } from "physicsDrawable";
+import { addGas, updateTexture } from "gas";
 
 const game = ObjectScope.game;
 
 UI.init();
-
+export const gasManager = new GasManager();
 export const app = new PIXI.Application<HTMLCanvasElement>({ backgroundColor: "#112244" });
 export let currentSubmarine: ShipBehaviour;
 
@@ -56,6 +58,9 @@ worldLayer.addChild(lightsLayer);
 worldLayer.addChild(worldUiLayer);
 
 app.stage.addChild(worldLayer);
+
+addGas();
+
 app.stage.addChild(uiLayer);
 window.onresize = resize;
 worldLayer.filterArea = new PIXI.Rectangle();
@@ -70,7 +75,7 @@ const spawnPoint = new Waypoint({ x: 0, y: 0 });
 spawnPoint.name = "spawn";
 
 export const currentSubPos = new Vector();
-Camera.scale = 0.5;
+Camera.scale = 0.25;
 let accumulator = 0;
 let phyTarget = 1 / 20;
 app.ticker.add((dt) => {
@@ -143,6 +148,8 @@ app.ticker.add((dt) => {
         const moveTo = drawable.physics.velocity.result().mult(12).add(drawable.sprite.position);
         Camera.glide(moveTo, 9);
     }
+
+    updateTexture();
 
     Network.sendMessages();
     Network.sendObjects();

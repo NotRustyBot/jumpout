@@ -1,10 +1,10 @@
-import { HandshakeReply, HandshakeRequest, NetManager, headerId } from "@shared/netManager";
+import { GasData, HandshakeReply, HandshakeRequest, NetManager, headerId } from "@shared/netManager";
 import { AutoView } from "@shared/datagram";
 import { Sync } from "@shared/sync";
 import { Message, messageType, netMessage } from "@shared/messages";
 import { ServerInfo } from "@shared/serverInfo";
 import { ObjectScope } from "@shared/objectScope";
-import { time } from "index";
+import { gasManager, time } from "index";
 
 export class Network {
     static websocket: WebSocket;
@@ -62,6 +62,16 @@ export class Network {
                     const msg = Message.read(view);
                     Network.handleMessage(msg);
                     break;
+                case headerId.gas:{
+                    const gas = NetManager.gas.deserealise<GasData>(view);
+                    console.log(gas.data.length);
+                    
+                    for (const datum of gas.data) {
+                        gasManager.setIndex(datum.index, datum.value);                        
+                    }
+                }
+                break;
+
             }
         }
     }
