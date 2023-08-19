@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+    "noImplicitOverride": true,
+
+        "baseUrl": "./src",
+        "outDir": "./dist",
+        "module": "CommonJS",
+        "moduleResolution": "Node",
+        "target": "ES6",
+        "strict": false,
+        "esModuleInterop": true,
+        "noImplicitAny": true,
+        "typeRoots": ["node_modules/@types"],
+        "sourceMap": true,
+        "paths": {
+            "@shared/*": ["../../shared/*"],
+        }
+    },
+}

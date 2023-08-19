@@ -1,0 +1,63 @@
+.ui {
+    font-family: sans-serif;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+}
+
+.ui-top {
+    padding-top: 20px;
+    height: 50px;
+}
+
+.ui-bottom {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    padding-bottom: 20px;
+}
+
+.ui-actions {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.action-button {
+    border-radius: 15px;
+    width: 60px;
+    height: 60px;
+    background-color: #88ccff;
+}
+
+.action-button > img {
+    padding: 5px;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.action-button:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+.ui-stats {
+    background-color: #88ccff22;
+    color: #fff;
+    width: 120px;
+    height: 100px;
+}
+
+.action-hint{
+    position: absolute;
+    top: -20px;
+    color: #fff;
+    margin: 0;
+}

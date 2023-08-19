@@ -1,0 +1,30 @@
+{
+  "scripts": {
+    "build": "webpack",
+    "serve": "webpack-dev-server --env=dev --allowed-hosts all"
+  },
+  "dependencies": {
+    "@pixi/filter-godray": "^5.1.1",
+    "@pixi/filter-hsl-adjustment": "^5.2.0",
+    "@pixi/filter-outline": "^5.2.0",
+    "@pixi/filter-reflection": "^5.1.1",
+    "@pixi/gif": "^2.1.0",
+    "brfs": "^2.0.2",
+    "browserify": "^17.0.0",
+    "howler": "^2.2.3",
+    "pixi.js": "^7.2.0"
+  },
+  "devDependencies": {
+    "@types/howler": "^2.2.7",
+    "raw-loader": "^4.0.2",
+    "ts-loader": "^9.4.4",
+    "tsconfig-paths": "^4.2.0",
+    "tsconfig-paths-webpack-plugin": "^4.1.0",
+    "tsify": "^5.0.4",
+    "typescript": "^4.9.4",
+    "watchify": "^4.0.0",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
+  }
+}

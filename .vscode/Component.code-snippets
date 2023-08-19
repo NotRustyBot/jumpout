@@ -1,0 +1,47 @@
+{
+    // Place your tiny-worlds workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and
+    // description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope
+    // is left empty or omitted, the snippet gets applied to all languages. The prefix is what is
+    // used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+    // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders.
+    // Placeholders with the same ids are connected.
+    // Example:
+    "Create new component": {
+        "scope": "javascript,typescript",
+        "prefix": ["comp", "component"],
+        "body": [
+            "export type Serialised$1 = {",
+            "}",
+            "",
+            "export type Serialised$1Component = Serialised$1 & SerialisedComponent;",
+            "",
+            "export class $1 extends NetComponent {",
+            "",
+            "    static override datagramDefinition(): void {",
+            "        super.datagramDefinition();",
+            "        this.datagram = this.datagram.cloneAppend<Serialised$1>({});",
+            "        this.cacheSize = 0;",
+            "    }",
+            "",
+            "    constructor(parent: BaseObject, id: number) {",
+            "        super(parent, id);",
+            "    }",
+            "",
+            "    override onRemove(): void {",
+            "    }",
+            "",
+            "    override toSerialisable(): Serialised$1Component {",
+            "        const data = super.toSerialisable() as Serialised$1Component;",
+            "        return data;",
+            "    }",
+            "",
+            "    override fromSerialisable(data: Serialised$1Component) {",
+            "        super.fromSerialisable(data)",
+            "    }",
+            "}",
+            "",
+            "",
+        ],
+        "description": "Log output to console"
+    }
+}
