@@ -46,7 +46,7 @@ export class NetManager {
             data: [
                 datatype.array,
                 new Datagram().append<GasDatum>({
-                    index: datatype.uint32,
+                    index: datatype.int32,
                     value: datatype.uint8,
                 }),
             ],

@@ -12,7 +12,7 @@ export function addGas() {
         uViewport: [0, 0, 0, 0],
         uScale: 0,
         uTime: 0,
-        uSize: 250,
+        uSize: GasManager.gasScale,
         uChunkCount: 40,
     };
 
@@ -46,8 +46,8 @@ export function updateTexture() {
     gasSprite.position.y = -Camera.size.y / 2;
 
     let i = 0;
-    for (let y = 0; y < 40; y++) {
-        for (let x = 0; x < 40; x++) {
+    for (let y = -20; y < 20; y++) {
+        for (let x = -20; x < 20; x++) {
             gasBytes[i] = gasManager.getGas({ x: x - Math.floor(Camera.position.x / GasManager.gasScale), y: y - Math.floor(Camera.position.y / GasManager.gasScale) });
             i++;
         }

@@ -72,5 +72,8 @@ void main(void) {
     coord /= uScale;
     coord += 0.5f;
     float gas = texture(uSampler, coord).a;
-    color = vec4(0.1, 0.8, 0.9, 0.5) * gas;
+    if(coord.x > 1.f || coord.y > 1. || coord.x < 0. || coord.y < 0.) {
+        gas = 0.f;
+    }
+    color = vec4(0.1f, 0.8f, 0.9f, 0.5f) * gas;
 }

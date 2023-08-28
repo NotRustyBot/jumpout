@@ -1,7 +1,7 @@
 import { Vectorlike } from "./types";
 
 export class GasManager {
-    static gasScale = 250;
+    static gasScale = 500;
     protected level = new Map<number, number>();
 
     setWorld(vector: Vectorlike, value: number) {
@@ -29,8 +29,8 @@ export class GasManager {
     }
 
     static worldToGas(vector: Vectorlike) {
-        vector.x = Math.round(vector.x / 250);
-        vector.y = Math.round(vector.y / 250);
+        vector.x = Math.round(vector.x / this.gasScale);
+        vector.y = Math.round(vector.y / this.gasScale);
         return vector;
     }
 
@@ -39,8 +39,8 @@ export class GasManager {
     }
 
     static worldToIndex(vector: Vectorlike): number {
-        vector.x = Math.round(vector.x / 250);
-        vector.y = Math.round(vector.y / 250);
+        vector.x = Math.round(vector.x / this.gasScale);
+        vector.y = Math.round(vector.y / this.gasScale);
         return ((vector.x & 0xffff) << 16) | (vector.y & 0xffff);
     }
 }
